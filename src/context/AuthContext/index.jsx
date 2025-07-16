@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
       const users = await response.json();
       const listData = users?.map((item) => {
         return {
+          id: item?.id,
           name: item?.name,
           email: item?.email,
           phone: item?.phone,

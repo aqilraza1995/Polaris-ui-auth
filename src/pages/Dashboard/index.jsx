@@ -134,38 +134,67 @@ const Dashboard = () => {
     return isError;
   };
 
-  const handleSubmit = () => {
-    const validate = handleValidation();
-    if (!validate) {
-      const users = JSON.parse(localStorage.getItem("users")) || [];
+const handleSubmit = () => {
+  const { name, email, phone } = userData; // Destructure from userData here
+  const validate = handleValidation();
+  if (!validate) {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
-      if (id) {
-        // Update existing user
-        const userIndex = users.findIndex((item) => item.id === id);
-        if (userIndex !== -1) {
-          const updatedUsers = [...users];
-          updatedUsers[userIndex] = {
-            ...updatedUsers[userIndex],
-            name,
-            email,
-            phone,
-          };
-          localStorage.setItem("users", JSON.stringify(updatedUsers));
-        }
-      } else {
-        const newUser = {
-          id: Date.now(),
-          name,
-          email,
-          phone,
-        };
-        localStorage.setItem("users", JSON.stringify([...users, newUser]));
-      }
-
-      handleClose();
-      setReload(!reload);
+    if (id) {
+      // Update existing user
+      const updatedUsers = users.map((item) => 
+        item.id === id ? { ...item, name, email, phone } : item
+      );
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+    } else {
+      // Add new user
+      const newUser = {
+        id: Date.now(),
+        name,
+        email,
+        phone,
+      };
+      localStorage.setItem("users", JSON.stringify([...users, newUser]));
     }
-  };
+
+    handleClose();
+    setReload(!reload);
+  }
+};
+
+
+  // const handleSubmit = () => {
+  //   const validate = handleValidation();
+  //   if (!validate) {
+  //     const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  //     if (id) {
+  //       // Update existing user
+  //       const userIndex = users.findIndex((item) => item.id === id);
+  //       if (userIndex !== -1) {
+  //         const updatedUsers = [...users];
+  //         updatedUsers[userIndex] = {
+  //           ...updatedUsers[userIndex],
+  //           name,
+  //           email,
+  //           phone,
+  //         };
+  //         localStorage.setItem("users", JSON.stringify(updatedUsers));
+  //       }
+  //     } else {
+  //       const newUser = {
+  //         id: Date.now(),
+  //         name,
+  //         email,
+  //         phone,
+  //       };
+  //       localStorage.setItem("users", JSON.stringify([...users, newUser]));
+  //     }
+
+  //     handleClose();
+  //     setReload(!reload);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
